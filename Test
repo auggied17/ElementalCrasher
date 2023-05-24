@@ -1,0 +1,74 @@
+import javax.swing.JFrame;
+import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.JButton;
+
+public class Test 
+{
+	public static int player1;
+	public static int player2;
+	
+	static JLabel label2 = new JLabel();
+	
+	static String slabel2 = "100 health";
+	
+	public static void main(String []args)
+	{
+		
+		
+		boolean valid = true; 
+		Scanner in = new Scanner(System.in); 
+		System.out.println("Welcome to ELEMENTAL SMASHERS!!!!"); 
+		System.out.println("This is a combat player vs player game, you will be able to choose which element you wish to pursue and take down your opponent!!!"); 
+		
+		System.out.println();
+	
+		System.out.println("Earth Speed: Slow ... Earth Damage: Average ... Earth Health ... High "); 
+		System.out.println("Air Speed: Average ... Air Damage: Average ... Air Health ... Average "); 
+		System.out.println("Fire Speed: Average ... Fire Damage: High ... Fire Health ... Low ");  
+		System.out.println("Water Speed: Fast ... Water Damage: Low ... Water Health ... Average "); 
+		System.out.println("(All Special Attacks do the same damage)");
+		
+		System.out.println(); 
+	
+		System.out.println("Player 1, choose your element...."); 
+		System.out.println("1: Earth, 2: Air, 3: Fire, 4: Water"); 
+		player1 = in.nextInt();
+		
+		System.out.println(); 
+		
+		while(valid)
+		{
+		System.out.println("Player 2, choose your element...."); 
+		System.out.println("1: Earth, 2: Air, 3: Fire, 4: Water"); 
+		player2 = in.nextInt();
+		if(player2 != player1)
+		{ 
+			valid = false; 
+		}
+		else 
+		{ 
+			System.out.println("CHOOSE A DIFFERENT ELEMENT CHEATER!!!");
+		}
+		}
+		
+
+		JFrame frame = new JFrame();
+		final int FRAME_WIDTH = 1020;
+		final int FRAME_HEIGHT = 650;
+		frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final BallComponent b = new BallComponent();
+		frame.add(b,BorderLayout.CENTER);
+		frame.setVisible(true); 
+		b.startAnimation();
+		
+		
+		
+		
+	}
+}
+
