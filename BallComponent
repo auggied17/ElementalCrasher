@@ -1,1 +1,437 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.awt.Color;
 
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+
+public class BallComponent extends JComponent implements Runnable, KeyListener
+{
+	Test a = new Test(); 
+	
+	int player1 = a.player1; 
+	int player2 = a.player2;
+	
+	private int x_Earth, x_EarthSpecial, x_Air, x_AirSpecial, x_Fire, x_FireSpecial, x_Water, x_WaterSpecial;
+	private int Earth_speed, EarthSpecial_speed, Air_speed, AirSpecial_speed, Fire_speed, FireSpecial_speed, Water_speed, WaterSpecial_speed;;
+	private int y_Earth, y_EarthSpecial, y_Air, y_AirSpecial, y_Fire, y_FireSpecial, y_Water, y_WaterSpecial;
+	private int key;
+	
+	private BufferedImage Air; 
+	private BufferedImage Fire; 
+	private BufferedImage Water; 
+	private BufferedImage Earth; 
+	private BufferedImage background;
+
+	private int player1_x;
+	private int player1_y;
+	private int player2_x ;
+	private int player2_y;
+	
+	private int Earth_health, Air_health, Fire_health, Water_health;
+	private int Earth_damage, Air_damage, Fire_damage, Water_damage;
+	
+	
+	private int player1_health; 
+	private int player2_health;
+	private int player1_damage; 
+	private int player2_damage; 
+	
+	
+	
+	
+	public BallComponent()
+	{
+		player1_x = 300;
+		player1_y = 200;
+		player2_x = 700;
+		player2_y = 200;
+		
+		Earth_health = 2000; 
+		Air_health = 1700;
+		Fire_health = 1500;
+		Water_health = 1700;
+		Earth_damage = 50; 
+		Air_damage = 50;
+		Fire_damage = 80;
+		Water_damage = 30;
+		
+		player1_health = 0; 
+		player2_health = 0;
+		player1_damage = 0; 
+		player2_damage = 0;
+		
+		addKeyListener(this); 
+		setFocusable(true); 
+		setFocusTraversalKeysEnabled(true);
+		
+		
+		try
+		{ 
+			background = ImageIO.read(Test.class.getResourceAsStream("SmashersBackground.jpg"));
+			Water = ImageIO.read(Test.class.getResourceAsStream("WaterElement.png"));
+			Fire = ImageIO.read(Test.class.getResourceAsStream("FireElement.png"));
+			Air = ImageIO.read(Test.class.getResourceAsStream("AirElement.png"));
+			Earth = ImageIO.read(Test.class.getResourceAsStream("EarthElement.png"));
+		}
+		
+		catch(IOException | IllegalArgumentException e)
+		{ 
+			e.printStackTrace(); 
+		}
+		
+	}
+	
+	public void startAnimation()
+	{
+ 		Thread t = new Thread(this);
+		t.start();
+	}
+	
+	public void run() 
+	{
+		while (true)
+		{
+		try
+		{ 
+			if(player1_y <= 140)
+			{ 
+				while(player1_y >= 200)
+				{ 
+					player1_y--;
+					repaint(); 
+					Thread.sleep(40);
+					
+					
+				}
+				 repaint();
+				Thread.sleep(300); 
+				player1_y = 200;
+			}
+			
+			if(player2_y <= 140)
+			{ 
+				while(player2_y >= 200)
+				{ 
+					player2_y--;
+					
+				}
+				repaint(); 
+				Thread.sleep(300); 
+				player2_y = 200;
+			}
+			
+			
+			
+			if(player1_x <= 200 || player1_x >= 800)
+			{ 
+				while(player1_y >= 200 && player1_y < 650)
+				{ 
+					player1_y+=10;
+					repaint(); 
+					Thread.sleep(40);
+					
+					
+				}
+				 repaint();
+				Thread.sleep(300); 
+				player1_y = 650;
+				
+			}
+			
+			if(player2_x <= 200 || player2_x >= 780)
+			{ 
+				while(player2_y >= 200 && player2_y < 650)
+				{ 
+					player2_y+=10;
+					repaint(); 
+					Thread.sleep(40);
+					
+					
+				}
+				 repaint();
+				Thread.sleep(300); 
+				player2_y = 650;
+				
+			}
+			
+			repaint(); 
+			Thread.sleep(20);
+		}
+		catch (InterruptedException e)
+		{ 
+			
+		}
+		}
+		
+	}
+	
+	
+	public void paintComponent(Graphics g)
+	{
+		
+		g.drawImage(background,0,0,null);
+		
+		if(player1 == 1)
+		{ 
+			
+			g.drawImage(Earth, player1_x, player1_y, null);
+			x_EarthSpecial = player1_x;
+			g.setColor(Color.green);
+			g.fillOval(x_EarthSpecial+60, player1_y+30, 20,20);
+			player1_health = Earth_health;
+			player1_damage = Earth_damage;
+		}
+		
+		if(player1 == 2)
+		{ 
+			
+			g.drawImage(Air, player1_x, player1_y, null);
+			x_AirSpecial = player1_x;
+			g.setColor(Color.gray);
+			g.fillOval(x_AirSpecial+60, player1_y+30, 20,20);
+			player1_health = Air_health;
+			player1_damage = Air_damage;
+		}
+		
+		if(player1 == 3)
+		{ 
+			g.drawImage(Fire, player1_x, player1_y, null);
+			x_FireSpecial = player1_x;
+			g.setColor(Color.red);
+			g.fillOval(x_FireSpecial+60, player1_y+30, 20,20);
+			player1_health = Fire_health;
+			player1_damage = Fire_damage;
+		}
+		
+		if(player1 == 4)
+		{ 
+			g.drawImage(Water, player1_x, player1_y, null);
+			x_WaterSpecial = player1_x;
+			g.setColor(Color.blue);
+			g.fillOval(x_WaterSpecial+60, player1_y+30, 20,20);
+			player1_health = Water_health;
+			player1_damage = Water_damage;
+		}
+	
+		
+		//player 2 
+		
+		if(player2 == 1)
+		{ 
+			g.drawImage(Earth, player2_x, player2_y, null);
+			x_EarthSpecial = player2_x;
+			g.setColor(Color.green);
+			g.fillOval(x_EarthSpecial-10, player2_y+30, 20,20);
+			player2_health = Earth_health;
+			player2_damage = Earth_damage;
+		}
+		
+		if(player2 == 2)
+		{ 
+			g.drawImage(Air, player2_x, player2_y, null);
+			x_AirSpecial = player2_x;
+			g.setColor(Color.gray);
+			g.fillOval(x_AirSpecial-10, player2_y+30, 20,20);
+			player2_health = Air_health;
+			player2_damage = Air_damage;
+		}
+		
+		if(player2 == 3)
+		{ 
+			g.drawImage(Fire, player2_x, player2_y, null);
+			x_FireSpecial = player2_x;
+			g.setColor(Color.red);
+			g.fillOval(x_FireSpecial-10, player2_y+30, 20,20);
+			player2_health = Fire_health;
+			player2_damage = Fire_damage;
+		}
+		
+		if(player2 == 4)
+		{ 
+			g.drawImage(Water, player2_x, player2_y, null);
+			x_WaterSpecial = player2_x;
+			g.setColor(Color.blue);
+			g.fillOval(x_WaterSpecial-10, player2_y+30, 20,20);
+			player2_health = Water_health;
+			player2_damage = Water_damage;
+		}
+		
+	}
+		
+	
+	
+	
+	
+	
+	public void keyPressed(KeyEvent e) 
+	{
+		
+		key = e.getKeyCode();
+		System.out.print(e.getKeyCode());
+		
+		if(e.getKeyCode() == 68 )  // player 1 right movement 
+		{ 
+			if(player1 == 1)
+			{ 
+				Earth_speed = 5; 
+				player1_x += Earth_speed;
+			}
+			
+			if(player1 == 2)
+			{ 
+				Air_speed = 9; 
+				player1_x += Air_speed;
+			}
+			
+			if(player1 == 3)
+			{ 
+				Fire_speed = 9; 
+				player1_x += Fire_speed;
+			}
+			
+			if(player1 == 4)
+			{ 
+				Water_speed = 21; 
+				player1_x += Water_speed;
+			}
+			
+		}
+		
+		if(e.getKeyCode() == 65 ) // player 1 left movement
+		{ 
+			
+			if(player1 == 1)
+			{ 
+				Earth_speed = -5; 
+				player1_x += Earth_speed;
+			}
+			
+			if(player1 == 2)
+			{ 
+				Air_speed = -9; 
+				player1_x += Air_speed;
+			}
+			
+			if(player1 == 3)
+			{ 
+				Fire_speed = -9; 
+				player1_x += Fire_speed;
+			}
+			
+			if(player1 == 4)
+			{ 
+				Water_speed = -21; 
+				player1_x += Water_speed;
+			}
+		}
+		
+		if(e.getKeyCode() == 87 && player1_y == 200 ) // player 1 jump
+		{ 
+			player1_y -= 60;
+		}
+	
+		
+		if(e.getKeyCode() == 70) // player 1 special attack
+		{ 
+			
+		}
+		
+		
+		
+		//player 2
+		
+		
+		
+		if(e.getKeyCode() == 76) 
+		{ 
+			if(player2 == 1)
+			{ 
+				Earth_speed = 5; 
+				player2_x += Earth_speed;
+			}
+			
+			if(player2 == 2)
+			{ 
+				Air_speed = 9; 
+				player2_x += Air_speed;
+			}
+			
+			if(player2 == 3)
+			{ 
+				Fire_speed = 9; 
+				player2_x += Fire_speed;
+			}
+			
+			if(player2 == 4)
+			{ 
+				Water_speed = 15; 
+				player2_x += Water_speed;
+			}
+		}
+		
+		if(e.getKeyCode() == 74)
+		{ 
+			if(player2 == 1)
+			{ 
+				Earth_speed = -5; 
+				player2_x += Earth_speed;
+			}
+			
+			if(player2 == 2)
+			{ 
+				Air_speed = -9; 
+				player2_x += Air_speed;
+			}
+			
+			if(player2 == 3)
+			{ 
+				Fire_speed = -9; 
+				player2_x += Fire_speed;
+			}
+			
+			if(player2 == 4)
+			{ 
+				Water_speed = -15; 
+				player2_x += Water_speed;
+			}
+			
+		}	
+		
+		if(e.getKeyCode() == 73 && player2_y == 200 ) // player 2 jump
+		{ 
+			player2_y -= 60;
+		}
+	
+	}
+
+
+
+	
+	
+
+	
+	public void keyReleased(KeyEvent arg0) 
+	{
+		
+		
+	}
+
+	
+	public void keyTyped(KeyEvent arg0) 
+	{
+		
+		
+	}
+	
+	
+	
+	
+}
