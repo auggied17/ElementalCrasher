@@ -6,19 +6,18 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.JButton;
 
+
 public class Test 
 {
 	public static int player1;
 	public static int player2;
 	
-	static JLabel label2 = new JLabel();
 	
-	static String slabel2 = "100 health";
 	
-	public static void main(String []args)
+	public static void main(String []args) 
 	{
-		
-		
+		 
+			
 		boolean valid = true; 
 		Scanner in = new Scanner(System.in); 
 		System.out.println("Welcome to ELEMENTAL SMASHERS!!!!"); 
@@ -69,6 +68,6 @@ public class Test
 		
 		
 		
+		
 	}
 }
-
