@@ -29,6 +29,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	private BufferedImage Water; 
 	private BufferedImage Earth; 
 	private BufferedImage background;
+	private BufferedImage win1; 
+	private BufferedImage win2;
 
 	private int player1_x;
 	private int player1_y;
@@ -44,7 +46,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	private int player1_damage; 
 	private int player2_damage; 
 	
-	
+	boolean check = true; 
+	boolean check2 = true;
 	
 	
 	public BallComponent()
@@ -63,10 +66,10 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		Fire_damage = 80;
 		Water_damage = 30;
 		
-		player1_health = 0; 
-		player2_health = 0;
-		player1_damage = 0; 
-		player2_damage = 0;
+		player1_health = 1; 
+		player2_health = 1;
+		player1_damage = 1; 
+		player2_damage = 1;
 		
 		addKeyListener(this); 
 		setFocusable(true); 
@@ -80,6 +83,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			Fire = ImageIO.read(Test.class.getResourceAsStream("FireElement.png"));
 			Air = ImageIO.read(Test.class.getResourceAsStream("AirElement.png"));
 			Earth = ImageIO.read(Test.class.getResourceAsStream("EarthElement.png"));
+			win1 = ImageIO.read(Test.class.getResourceAsStream("Player1Wins.png"));
+			win2 = ImageIO.read(Test.class.getResourceAsStream("Player2Wins.png"));
 		}
 		
 		catch(IOException | IllegalArgumentException e)
@@ -264,6 +269,24 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			player2_damage = Water_damage;
 		}
 		
+		
+		
+		
+		if((player2_y == 650 || player2_health == 0) && check) // player 1 wins if player 2 falls
+		{ 
+			g.drawImage(win1,400,50,null);
+			
+			check2 = false;
+			
+		}
+		
+		if((player1_y == 650 || player1_health == 0) && check2) // player 2 wins if player 1 falls
+		{ 
+			g.drawImage(win2,400,50,null);
+			
+			check = false;
+		}
+		
 	}
 		
 	
@@ -339,6 +362,19 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		}
 	
 		
+		if(e.getKeyCode() == 81) // player 1 left attack
+		{ 
+			
+		}
+	
+		
+		if(e.getKeyCode() == 69) // player 1 right attack
+		{ 
+			
+		}
+		
+		
+		
 		if(e.getKeyCode() == 70) // player 1 special attack
 		{ 
 			
@@ -346,11 +382,16 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		
 		
+		
+		
+		
+		
+		
 		//player 2
 		
 		
 		
-		if(e.getKeyCode() == 76) 
+		if(e.getKeyCode() == 76) // player 2 right movement 
 		{ 
 			if(player2 == 1)
 			{ 
@@ -409,6 +450,21 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			player2_y -= 60;
 		}
+		
+		if(e.getKeyCode() == 85 ) // player 2 left attack
+		{ 
+			
+		}
+	
+		
+		if(e.getKeyCode() == 79) // player 2 right attack
+		{ 
+			
+		}
+		
+		
+		
+		
 	
 	}
 
