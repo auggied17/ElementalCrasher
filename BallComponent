@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -19,14 +20,11 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	int player1 = a.player1; 
 	int player2 = a.player2;
 	
-	private int x_Earth, x_EarthSpecial, x_Air, x_AirSpecial, x_Fire, x_FireSpecial, x_Water, x_WaterSpecial,help = 0;
+	private int  x_EarthSpecial, x_AirSpecial, x_FireSpecial, x_WaterSpecial;
 	private int Earth_speed, EarthSpecial_speed, Air_speed, AirSpecial_speed, Fire_speed, FireSpecial_speed, Water_speed, WaterSpecial_speed;;
-	private int y_Earth;
+	private int y_Earth, y_EarthSpecial, y_Air, y_AirSpecial, y_Fire, y_FireSpecial, y_Water, y_WaterSpecial;
 	private int key;
-	private int move = 0;
-	private int move2 = 0;
-	private int special1;
-	private int special2;
+	
 	private BufferedImage Air; 
 	private BufferedImage Fire; 
 	private BufferedImage Water; 
@@ -34,23 +32,35 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	private BufferedImage background;
 	private BufferedImage win1; 
 	private BufferedImage win2;
-	private int b;
+	private BufferedImage label1; 
+	private BufferedImage label2;
+
 	private int player1_x;
 	private int player1_y;
 	private int player2_x ;
 	private int player2_y;
+	
 	private int Earth_health, Air_health, Fire_health, Water_health;
 	private int Earth_damage, Air_damage, Fire_damage, Water_damage;
 	
-	private String player1health, player1label, player2label;
-	private String player2health;
+	
 	private int player1_health; 
 	private int player2_health;
 	private int player1_damage; 
 	private int player2_damage; 
 	
+	private int special1, special2, move, move2;
+	
+	private String player1health; 
+	private String player2health;
+	private String player1label = "Player 1 HP:";
+	private String player2label = "Player 2 HP:";
+	
 	boolean check = true; 
 	boolean check2 = true;
+	
+	Font stringFont = new Font("Dialog", Font.PLAIN, 20);
+	
 	
 	
 	public BallComponent()
@@ -59,63 +69,64 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		player1_y = 200;
 		player2_x = 700;
 		player2_y = 200;
-		b = 0;
 		special1 = player1_x;
 		special2 = player2_x;
 		Earth_health = 2000; 
 		Air_health = 1700;
 		Fire_health = 1500;
 		Water_health = 1700;
-		Earth_damage = 50; 
-		Air_damage = 50;
+		Earth_damage = 60; 
+		Air_damage = 60;
 		Fire_damage = 80;
-		Water_damage = 30;
-		player1label = "player1";
-		player2label = "player2";
-		player1_health = 1; 
-		player2_health = 1;
-		player1_damage = 1; 
-		player2_damage = 1;
-		//x_FireSpecial = player1_x;
-		if(player1 == 1 )
-		{
-			player1_health= Earth_health;
+		Water_damage = 40;
+		
+		if(player1 == 1)
+		{ 
+			player1_health = Earth_health; 
 			player1_damage = Earth_damage;
 		}
-		if(player1 == 2 )
-		{
-			player1_health= Air_health;
+		
+		if(player1 == 2)
+		{ 
+			player1_health = Air_health; 
 			player1_damage = Air_damage;
 		}
-		if(player1 == 3 )
-		{
-			player1_health= Fire_health;
+		
+		if(player1 == 3)
+		{ 
+			player1_health = Fire_health; 
 			player1_damage = Fire_damage;
 		}
-		if(player1 == 4 )
-		{
-			player1_health= Water_health;
+		
+		if(player1 == 4)
+		{ 
+			player1_health = Water_health; 
 			player1_damage = Water_damage;
 		}
 		
-		if(player2 == 1 )
-		{
-			player2_health= Earth_health;
+		
+
+		if(player2 == 1)
+		{ 
+			player2_health = Earth_health; 
 			player2_damage = Earth_damage;
 		}
-		if(player2 == 2 )
-		{
-			player2_health= Air_health;
+		
+		if(player2 == 2)
+		{ 
+			player2_health = Air_health; 
 			player2_damage = Air_damage;
 		}
-		if(player2 == 3 )
-		{
-			player2_health= Fire_health;
+		
+		if(player2 == 3)
+		{ 
+			player2_health = Fire_health; 
 			player2_damage = Fire_damage;
 		}
-		if(player2 == 4 )
-		{
-			player2_health= Water_health;
+		
+		if(player2 == 4)
+		{ 
+			player2_health = Water_health; 
 			player2_damage = Water_damage;
 		}
 		
@@ -128,6 +139,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		try
 		{ 
 			background = ImageIO.read(Test.class.getResourceAsStream("SmashersBackground.jpg"));
+			label1 = ImageIO.read(Test.class.getResourceAsStream("LabelPlayer1.png"));
+			label2 = ImageIO.read(Test.class.getResourceAsStream("LabelPlayer2.png"));
 			Water = ImageIO.read(Test.class.getResourceAsStream("WaterElement.png"));
 			Fire = ImageIO.read(Test.class.getResourceAsStream("FireElement.png"));
 			Air = ImageIO.read(Test.class.getResourceAsStream("AirElement.png"));
@@ -147,7 +160,6 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	{
  		Thread t = new Thread(this);
 		t.start();
-
 	}
 	
 	public void run() 
@@ -156,6 +168,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{
 		try
 		{ 
+			
 			if(move == 1)
 			{
 				
@@ -246,11 +259,44 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 			
 			
+			
+			
+			
+			
+			if(player1_y <= 140)
+			{ 
+				while(player1_y >= 200)
+				{ 
+					player1_y--;
+					repaint(); 
+					Thread.sleep(40);
+					
+					
+				}
+				 repaint();
+				Thread.sleep(300); 
+				player1_y = 200;
+			}
+			
+			if(player2_y <= 140)
+			{ 
+				while(player2_y >= 200)
+				{ 
+					player2_y--;
+					
+				}
+				repaint(); 
+				Thread.sleep(300); 
+				player2_y = 200;
+			}
+			
+			
+			
 			if(player1_x <= 200 || player1_x >= 800)
 			{ 
 				while(player1_y >= 200 && player1_y < 650)
 				{ 
-					player1_y+=15;
+					player1_y+=10;
 					repaint(); 
 					Thread.sleep(40);
 					
@@ -266,7 +312,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			{ 
 				while(player2_y >= 200 && player2_y < 650)
 				{ 
-					player2_y+=15;
+					player2_y+=10;
 					repaint(); 
 					Thread.sleep(40);
 					
@@ -286,15 +332,15 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 		}
 		}
-		
 	}
-	
+
 	
 	public void paintComponent(Graphics g)
 	{
 		
 		g.drawImage(background,0,0,null);
 		
+		g.setFont(stringFont);
 		player1health = String.valueOf(player1_health);
 		player2health = String.valueOf(player2_health);
 		
@@ -302,37 +348,43 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		g.drawString(player2label, 730, 60);
 		g.drawString(player1health, 150, 60);
 		g.drawString(player2health, 850, 60);
-	
+		
+		
+		
 		if(player1 == 1)
 		{ 
-			
+			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Earth, player1_x, player1_y, null);
 			g.setColor(Color.green);
 			g.fillOval(special1+60, player1_y+30, 20,20);
+			
 		}
 		
 		if(player1 == 2)
 		{ 
-			
+			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Air, player1_x, player1_y, null);
 			g.setColor(Color.gray);
 			g.fillOval(special1+60, player1_y+30, 20,20);
+			
 		}
 		
 		if(player1 == 3)
 		{ 
+			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Fire, player1_x, player1_y, null);
 			g.setColor(Color.red);
-			g.fillOval(special1+60, player1_y+30, 20,20);
+			g.fillOval(special1+60,player1_y+30, 20,20);
 		
 		}
 		
 		if(player1 == 4)
 		{ 
+			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Water, player1_x, player1_y, null);
 			g.setColor(Color.blue);
 			g.fillOval(special1+60, player1_y+30, 20,20);
-			
+		
 		}
 	
 		
@@ -340,37 +392,44 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(player2 == 1)
 		{ 
+			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Earth, player2_x, player2_y, null);
 			g.setColor(Color.green);
 			g.fillOval(special2-10, player2_y+30, 20,20);
+			
 		}
 		
 		if(player2 == 2)
 		{ 
+			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Air, player2_x, player2_y, null);
 			g.setColor(Color.gray);
 			g.fillOval(special2-10, player2_y+30, 20,20);
-
+			
 		}
 		
 		if(player2 == 3)
 		{ 
+			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Fire, player2_x, player2_y, null);
 			g.setColor(Color.red);
 			g.fillOval(special2-10, player2_y+30, 20,20);
+		
 		}
 		
 		if(player2 == 4)
 		{ 
+			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Water, player2_x, player2_y, null);
 			g.setColor(Color.blue);
 			g.fillOval(special2-10, player2_y+30, 20,20);
+			
 		}
 		
 		
 		
 		
-		if((player2_y == 650 || player2_health == 0) && check) // player 1 wins if player 2 falls
+		if((player2_y == 650 || player2_health <= 0) && check) // player 1 wins if player 2 falls
 		{ 
 			g.drawImage(win1,400,50,null);
 			
@@ -378,7 +437,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 		}
 		
-		if((player1_y == 650 || player1_health == 0) && check2) // player 2 wins if player 1 falls
+		if((player1_y == 650 || player1_health <= 0) && check2) // player 2 wins if player 1 falls
 		{ 
 			g.drawImage(win2,400,50,null);
 			
@@ -400,25 +459,27 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(e.getKeyCode() == 68 )  // player 1 right movement 
 		{ 
-			if(player1 == 1)
+			if(player1 == 1 && check && check2)
 			{ 
 				Earth_speed = 5; 
 				player1_x += Earth_speed;
+				
 			}
 			
-			if(player1 == 2)
+			if(player1 == 2 && check && check2 )
 			{ 
 				Air_speed = 9; 
 				player1_x += Air_speed;
+				
 			}
 			
-			if(player1 == 3)
+			if(player1 == 3 && check && check2)
 			{ 
 				Fire_speed = 9; 
 				player1_x += Fire_speed;
 			}
 			
-			if(player1 == 4)
+			if(player1 == 4 && check && check2)
 			{ 
 				Water_speed = 21; 
 				player1_x += Water_speed;
@@ -426,7 +487,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 		}
 		
-		if(e.getKeyCode() == 65 ) // player 1 left movement
+		if(e.getKeyCode() == 65 && check && check2) // player 1 left movement
 		{ 
 			
 			if(player1 == 1)
@@ -462,25 +523,28 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(e.getKeyCode() == 81) // player 1 left attack
 		{ 
-			
+			if(player1_x - player2_x >= 0 && player1_x - player2_x <= 65 && check && check2)
+			{ 
+				player2_health -= player1_damage;
+			}
+		
 		}
 	
 		
 		if(e.getKeyCode() == 69) // player 1 right attack
 		{ 
-			
+			if(player1_x - player2_x <= 0 && player1_x - player2_x >= -65 && check && check2)
+			{ 
+				player2_health -= player1_damage;
+			}
 		}
 		
-		if(e.getKeyCode() == 70)
-		{
+		
+		
+		if(e.getKeyCode() == 70) // player 1 special attack
+		{ 
 			move = 1;
 		}
-		
-	
-		
-		
-		
-		
 		
 		
 		
@@ -489,7 +553,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		
 		
-		if(e.getKeyCode() == 76) // player 2 right movement 
+		if(e.getKeyCode() == 76 && check && check2) // player 2 right movement 
 		{ 
 			if(player2 == 1)
 			{ 
@@ -516,7 +580,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			}
 		}
 		
-		if(e.getKeyCode() == 74)
+		if(e.getKeyCode() == 74 && check && check2)
 		{ 
 			if(player2 == 1)
 			{ 
@@ -551,20 +615,26 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(e.getKeyCode() == 85 ) // player 2 left attack
 		{ 
-			
+			if(player2_x - player1_x > 0 && player2_x - player1_x <= 65 && check && check2)
+			{ 
+				player1_health -= player2_damage;
+			}
 		}
 	
 		
 		if(e.getKeyCode() == 79) // player 2 right attack
 		{ 
-			
+			if(player2_x - player1_x <= 0 && player2_x - player1_x >= -65 && check && check2)
+			{ 
+				player1_health -= player2_damage;
+			}
 		}
+		
 		if(e.getKeyCode() == 72)
 		{
 			move2 = 1;
 		}
-		
-		
+	
 		
 	
 	}
@@ -587,8 +657,10 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		
 	}
+
 	
 	
 	
+
 	
 }
