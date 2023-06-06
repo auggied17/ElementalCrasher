@@ -58,6 +58,9 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	
 	boolean check = true; 
 	boolean check2 = true;
+	boolean valid = false;
+	boolean valid2 = false;
+
 	
 	Font stringFont = new Font("Dialog", Font.PLAIN, 20);
 	
@@ -173,11 +176,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			{
 				
 				special1+= 12;
-				if((player2_x - 110) > special1 || (player2_x - 60) <= special1)
-				{
-					player2_y = 200;
-				}
-				else if(player2_y == 140 && (player2_x - 110) <= special1 && (player2_x-60) >= special1)
+				
+				if(player2_y == 140 && (player2_x - 110) <= special1 && (player2_x-60) >= special1)
 				{
 					repaint();
 					Thread.sleep(300);
@@ -186,11 +186,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 					special1 = player2_x +60;
 				}
 				
-				if(special1 >= 1020)
-				{
-					move = 0;
-					special1 = player1_x;
-				}
+			
 				
 				
 				
@@ -232,11 +228,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			if(move2 == 1)
 			{
 				special2-= 12;
-				if((player1_x + 120) < special2 || (player1_x + 60) >= special2)
-				{
-					player1_y = 200;
-				}
-				else if(player1_y == 140 && (player1_x + 120) <= special2 && (player1_x+60) >= special2)
+				
+				 if(player1_y == 140 && (player1_x + 120) <= special2 && (player1_x+60) >= special2)
 				{
 					repaint();
 					Thread.sleep(300);
@@ -245,23 +238,10 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 					special2 = player1_x -60;
 				}
 				
-				if(special2 <= 0)
-				{
-					move2 = 0;
-					special2 = player2_x;
-				}
-				
-				
 				
 			}
 			
-			
-			
-			
-			
-			
-			
-			
+				
 			
 			if(player1_y <= 140)
 			{ 
@@ -292,7 +272,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 			
 			
-			if(player1_x <= 200 || player1_x >= 800)
+			if(player1_x <= 200 || player1_x >= 780)
 			{ 
 				while(player1_y >= 200 && player1_y < 650)
 				{ 
@@ -355,8 +335,12 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Earth, player1_x, player1_y, null);
+			
+			if(valid)
+			{
 			g.setColor(Color.green);
-			g.fillOval(special1+60, player1_y+30, 20,20);
+			g.fillOval(special1+60, 230, 20,20);
+			}
 			
 		}
 		
@@ -364,17 +348,24 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Air, player1_x, player1_y, null);
-			g.setColor(Color.gray);
-			g.fillOval(special1+60, player1_y+30, 20,20);
 			
+			if(valid)
+			{
+			g.setColor(Color.gray);
+			g.fillOval(special1+60, 230, 20,20);
+			}
 		}
 		
 		if(player1 == 3)
 		{ 
 			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Fire, player1_x, player1_y, null);
+		
+			if(valid)
+			{
 			g.setColor(Color.red);
-			g.fillOval(special1+60,player1_y+30, 20,20);
+			g.fillOval(special1+ 60, 230, 20, 20);
+			}
 		
 		}
 		
@@ -382,8 +373,12 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label1, player1_x + 30, player1_y - 40, null);
 			g.drawImage(Water, player1_x, player1_y, null);
+		
+			if(valid)
+			{
 			g.setColor(Color.blue);
-			g.fillOval(special1+60, player1_y+30, 20,20);
+			g.fillOval(special1+60,230, 20,20);
+			}
 		
 		}
 	
@@ -394,17 +389,26 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Earth, player2_x, player2_y, null);
+			
+			if(valid2)
+			{
 			g.setColor(Color.green);
-			g.fillOval(special2-10, player2_y+30, 20,20);
+			g.fillOval(special2-10, 230, 20,20);
+			}
 			
 		}
 		
 		if(player2 == 2)
 		{ 
+			
 			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Air, player2_x, player2_y, null);
+		
+			if(valid2)
+			{
 			g.setColor(Color.gray);
-			g.fillOval(special2-10, player2_y+30, 20,20);
+			g.fillOval(special2-10, 230, 20,20);
+			}
 			
 		}
 		
@@ -412,8 +416,12 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Fire, player2_x, player2_y, null);
+			
+			if(valid2)
+			{
 			g.setColor(Color.red);
-			g.fillOval(special2-10, player2_y+30, 20,20);
+			g.fillOval(special2-10, 230, 20,20);
+			}
 		
 		}
 		
@@ -421,12 +429,25 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		{ 
 			g.drawImage(label2, player2_x + 30, player2_y - 40, null);
 			g.drawImage(Water, player2_x, player2_y, null);
-			g.setColor(Color.blue);
-			g.fillOval(special2-10, player2_y+30, 20,20);
 			
+			if(valid2)
+			{
+			g.setColor(Color.blue);
+			g.fillOval(special2-10, 230, 20,20);
+			}
 		}
 		
+		if(special1 - player2_x >= -5 && special1 - player2_x <= 5 && player2_y == 200)
+		{ 
+			player2_health -= 300;
+			special1 = 1500;
+		}
 		
+		if(special2 - player1_x >= -5 && special2 - player1_x <= 5 && player1_y == 200)
+		{ 
+			player1_health -= 300;
+			special2 = -500;
+		}
 		
 		
 		if((player2_y == 650 || player2_health <= 0) && check) // player 1 wins if player 2 falls
@@ -544,6 +565,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		if(e.getKeyCode() == 70) // player 1 special attack
 		{ 
 			move = 1;
+			valid = true;
 		}
 		
 		
@@ -608,7 +630,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 		}	
 		
-		if(e.getKeyCode() == 73 && player2_y == 200 ) // player 2 jump
+		if(e.getKeyCode() == 73 && player2_y == 200) // player 2 jump
 		{ 
 			player2_y -= 60;
 		}
@@ -633,6 +655,8 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		if(e.getKeyCode() == 72)
 		{
 			move2 = 1;
+			valid2 = true;
+		
 		}
 	
 		
