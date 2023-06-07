@@ -81,7 +81,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		Earth_damage = 60; 
 		Air_damage = 60;
 		Fire_damage = 80;
-		Water_damage = 40;
+		Water_damage = 50;
 		
 		if(player1 == 1)
 		{ 
@@ -175,7 +175,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			if(move == 1)
 			{
 				
-				special1+= 12;
+				special1+= 5;
 				
 				if(player2_y == 140 && (player2_x - 110) <= special1 && (player2_x-60) >= special1)
 				{
@@ -227,7 +227,7 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			}
 			if(move2 == 1)
 			{
-				special2-= 12;
+				special2-= 5;
 				
 				 if(player1_y == 140 && (player1_x + 120) <= special2 && (player1_x+60) >= special2)
 				{
@@ -437,13 +437,15 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			}
 		}
 		
-		if(special1 - player2_x >= -5 && special1 - player2_x <= 5 && player2_y == 200)
+		
+		if( player2_y == 200 && special1 - player2_x >= -5 && special1 - player2_x <= 0 && player1_x < player2_x)
 		{ 
 			player2_health -= 300;
 			special1 = 1500;
 		}
 		
-		if(special2 - player1_x >= -5 && special2 - player1_x <= 5 && player1_y == 200)
+		
+		if(player1_y == 200 && special2 - player1_x >= 0 && special2 - player1_x <= 5 && player1_x < player2_x)
 		{ 
 			player1_health -= 300;
 			special2 = -500;
@@ -476,7 +478,6 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 	{
 		
 		key = e.getKeyCode();
-		System.out.print(e.getKeyCode());
 		
 		if(e.getKeyCode() == 68 )  // player 1 right movement 
 		{ 
@@ -489,20 +490,20 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 			
 			if(player1 == 2 && check && check2 )
 			{ 
-				Air_speed = 9; 
+				Air_speed = 15; 
 				player1_x += Air_speed;
 				
 			}
 			
 			if(player1 == 3 && check && check2)
 			{ 
-				Fire_speed = 9; 
+				Fire_speed = 15; 
 				player1_x += Fire_speed;
 			}
 			
 			if(player1 == 4 && check && check2)
 			{ 
-				Water_speed = 21; 
+				Water_speed = 25; 
 				player1_x += Water_speed;
 			}
 			
@@ -538,26 +539,36 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(e.getKeyCode() == 87 && player1_y == 200 ) // player 1 jump
 		{ 
+			if(move2 == 0)
+			{
 			player1_y -= 60;
+			} 
+			else if(move2 == 1 && special2 < player1_x + 110)
+			{ 
+				player1_y -= 60;
+			}
 		}
 	
 		
 		if(e.getKeyCode() == 81) // player 1 left attack
 		{ 
-			if(player1_x - player2_x >= 0 && player1_x - player2_x <= 65 && check && check2)
+			if(player1_x - player2_x >= 0 && player1_x - player2_x <= 65 && check && check2 )
 			{ 
 				player2_health -= player1_damage;
+				
 			}
-		
+			
 		}
 	
-		
+	
 		if(e.getKeyCode() == 69) // player 1 right attack
 		{ 
-			if(player1_x - player2_x <= 0 && player1_x - player2_x >= -65 && check && check2)
+			if(player1_x - player2_x <= 0 && player1_x - player2_x >= -65 && check && check2 )
 			{ 
 				player2_health -= player1_damage;
+				
 			}
+			
 		}
 		
 		
@@ -632,7 +643,14 @@ public class BallComponent extends JComponent implements Runnable, KeyListener
 		
 		if(e.getKeyCode() == 73 && player2_y == 200) // player 2 jump
 		{ 
+			if(move == 0)
+			{
 			player2_y -= 60;
+			} 
+			else if(move == 1 && special1 > player2_x - 110)
+			{ 
+				player2_y -= 60;
+			}
 		}
 		
 		if(e.getKeyCode() == 85 ) // player 2 left attack
